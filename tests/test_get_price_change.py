@@ -22,4 +22,11 @@ def product_data():
         ]
     }
 
-
+@pytest.mark.parametrize("product_name, expected_output", [
+    ("Шампунь", "Ціна на 'Шампунь' зросла на 5.00 грн за останній місяць."),
+    ("Крем", "Немає даних за останній місяць для 'Крем'."),
+    ("Гель", "Ціна на 'Гель' не змінилась на 0.00 грн за останній місяць."),
+    ("Мило", "Товар 'Мило' не знайдено у файлі.")
+])
+def test_get_price_change(product_data, product_name, expected_output):
+    assert get_price_change(product_data, product_name) == expected_output
