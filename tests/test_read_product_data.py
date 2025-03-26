@@ -32,3 +32,12 @@ def test_empty_file():
 
     assert result == {}
 
+# Параметризація для перевірки неправильного формату даних
+@pytest.mark.parametrize("invalid_data, expected_exception", [
+    ("Шампунь; 2025-03-01; 150.0\nШампунь; 2025-03-02; 140.0", ValueError),  # неправильний роздільник
+    ("Шампунь, 03-01-2025, 150.0\nШампунь, 03-02-2025, 140.0", ValueError)     # неправильний формат дати
+])
+def test_invalid_format(invalid_data, expected_exception):
+    with patch("builtins.open", mock_open(read_data=invalid_data)):
+        with pytest.raises(expected_exception):
+            read_product_data("mock_file.txt")
