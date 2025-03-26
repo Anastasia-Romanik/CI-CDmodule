@@ -3,6 +3,7 @@ from unittest.mock import mock_open, patch
 from datetime import datetime
 from main import read_product_data
 
+
 @pytest.fixture
 def mock_file_data():
     return "Шампунь, 2025-03-01, 150.0\nШампунь, 2025-03-02, 140.0\nКрем, 2025-03-01, 200.0"
@@ -23,4 +24,11 @@ def test_read_product_data(mock_file_data):
     }
 
     assert result == expected_result
+
+
+def test_empty_file():
+    with patch("builtins.open", mock_open(read_data="")):
+        result = read_product_data("mock_file.txt")
+
+    assert result == {}
 
